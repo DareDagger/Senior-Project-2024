@@ -38,7 +38,7 @@ void launchDemo(int demoIndex) {
             demoCommand = "./cubeDemo";
             break;
         case 1:
-            demoCommand = "/home/darren/Mesa/demos/build-dir/src/redbook/alpha3D";
+            demoCommand = "./triPyramidDemo";
             break;
         case 2:
             demoCommand = "/home/darren/Mesa/demos/build-dir/src/redbook/anti";
