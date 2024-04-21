@@ -38,13 +38,16 @@ void launchDemo(int demoIndex) {
             demoCommand = "./cubeDemo";
             break;
         case 1:
-            demoCommand = "./triPyramidDemo";
+            demoCommand = "./triPyramid";
             break;
         case 2:
-            demoCommand = "/home/darren/Mesa/demos/build-dir/src/redbook/anti";
+            demoCommand = "./sphereDemo";
             break;
         case 3:
-            demoCommand = "/home/darren/Mesa/demos/build-dir/src/redbook/movelight";
+            demoCommand = "./diamondDemo";
+            break;
+        case 4:
+            demoCommand = "./advCube";
             break;
         default:
             std::cerr << "Unknown demo index: " << demoIndex << std::endl;
@@ -74,11 +77,12 @@ int main() {
 
     // Define buttons
     std::vector<Button> buttons = {
-        {-1, 0.9, 0.5, 0.1}, // Placeholder for demo buttons: Button 1
-        {-1, 0.7, 0.5, 0.1}, // Add more as needed; Button 2
-        {-1, 0.5, 0.5, 0.1}, // Button 3
-        {-1, 0.3, 0.5, 0.1}, // Button 4
-        {-1, 0.1, 0.5, 0.1}, // Exit button
+        {-1, 0.9, 0.5, 0.1},  // Placeholder for demo buttons: Button 1
+        {-1, 0.7, 0.5, 0.1},  // Add more as needed; Button 2
+        {-1, 0.5, 0.5, 0.1},  // Button 3
+        {-1, 0.3, 0.5, 0.1},  // Button 4
+        {-1, 0.1, 0.5, 0.1},  // Button 5
+        {-1, -0.1, 0.5, 0.1}, // Exit Button
     };
 
     while (!glfwWindowShouldClose(window)) {
