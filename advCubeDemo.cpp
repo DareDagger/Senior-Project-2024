@@ -44,7 +44,7 @@ in vec3 ViewPos;
 void main()
 {
     // Ambient light
-    float ambientStrength = 0.1;
+    float ambientStrength = 0.5;
     vec3 ambient = ambientStrength * vec3(1.0, 0.65, 0.0); // Orange color
 
     // Diffuse light
@@ -163,7 +163,7 @@ int main() {
 
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -199,8 +199,18 @@ int main() {
         glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
+    //glDeleteShader(vertexShader);
+    //glDeleteShader(fragmentShader);
+    glValidateProgram(shaderProgram);
+    glGetProgramiv(shaderProgram, GL_VALIDATE_STATUS, &success);
+    if(success == GL_FALSE)
+    {
+        GLchar errorLog[1024] = {0};
+        glGetProgramInfoLog(shaderProgram, 1024, NULL, errorLog);
+        std::cout << "error validating shader program; Details: " << errorLog << std::endl;;
+        return NULL;
+    }
+
 
     glEnable(GL_DEPTH_TEST);
 
@@ -215,17 +225,18 @@ int main() {
 
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         glUseProgram(shaderProgram);
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(glm::perspective(glm::radians(fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f)));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr( glm::perspective(glm::radians(fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 120.0f)));
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp)));
+
         glm::mat4 model = glm::mat4(1.0f);
+
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
         glUniform3fv(glGetUniformLocation(shaderProgram, "lightPos"), 1, &lightPos[0]);
         glUniform3fv(glGetUniformLocation(shaderProgram, "viewPos"), 1, &cameraPos[0]);
 
-        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         glfwSwapBuffers(window);
