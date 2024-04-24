@@ -57,8 +57,7 @@ int main() {
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     std::cerr << "Failed to initialize GLAD" << std::endl;
     return -1;
-}
-
+    }
 
     // Build and compile our shader program
     // Vertex shader

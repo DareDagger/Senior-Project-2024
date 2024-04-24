@@ -229,7 +229,18 @@ int main() {
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr( glm::perspective(glm::radians(fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 120.0f)));
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp)));
 
-        glm::mat4 model = glm::mat4(1.0f);
+        // This code rotates the object so we can better see how the lighting works
+        float distance = -2.0f; 
+        glm::vec3 translationVector(0.0f, 0.0f, distance);
+
+        glm::mat4 rotationX = glm::rotate(glm::mat4(1.0f), glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        glm::mat4 rotationY = glm::rotate(glm::mat4(1.0f), glm::radians(45.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::mat4 rotationZ = glm::rotate(glm::mat4(1.0f), glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), translationVector) * rotationX * rotationY;
+
+        // Replace the code above with this to set the cube to face front again
+        //glm::mat4 model = glm::mat4(1.0f);
 
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
